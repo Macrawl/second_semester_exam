@@ -1,0 +1,52 @@
+
+--- 
+- hosts: 192.168.56.24
+  become: yes 
+  tasks: 
+    - name: Update  APT package 
+      apt: 
+        update_cache: yes 
+        
+  
+    - name: Install Apache
+        apt:
+        name: apache2
+        state: present
+      
+
+    - name: Install mysql-server
+      apt: 
+        name: mysql-server
+        state: present 
+        vars_prompt:
+        - name: "mysql_root_password"
+          prompt: "Enter MySQL root password"
+          private: yes
+        become_user: root
+        become_method: sudo
+        environment:
+          DEBIAN_FRONTEND: noninteractive
+        register: mysql_install_result
+
+    - name: Secure MySQL installation
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        login_unix_socket: yes
+        host: localhost
+        check_implicit_admin: yes
+        login_user: root
+        
+
+   - name: Install PHP
+      apt:
+        name: php php-mysql
+        state: present
+
+   - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+    
+
