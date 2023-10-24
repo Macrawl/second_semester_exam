@@ -20,10 +20,7 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 #installing MYSQL server
 sudo apt-get install mysql-server
 
-
-
 #Installing PHP
-
 
 sudo add-apt-repository -y ppa:ondrej/php
 
@@ -78,5 +75,9 @@ sudo chmod -R 775 /var/www/html/laravel
 sudo chmod -R 775 /var/www/html/laravel/storage
 
 sudo chmod -R 775 /var/www/html/laravel/bootstrap/cache
+
+#Apache configuration to serve the app by copying .env.example  to .env 
+
+sudo cp .env.example .env
 
 
