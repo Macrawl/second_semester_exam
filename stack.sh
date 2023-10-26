@@ -80,4 +80,22 @@ sudo chmod -R 775 /var/www/html/laravel/bootstrap/cache
 
 sudo cp .env.example .env
 
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/myapp.conf
+
+sudo sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/myapp\/public/' /etc/apache2/sites-available/myapp.conf
+
+sudo a2ensite myapp.conf
+
+sudo systemctl restart apache2
+
+#Create a test PHP file to check if Apache and PHP are working
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+
+#Restart Apache to apply changes
+sudo systemctl restart apache2
+
+# LAMP Stack deployment to the Master Node Completed
+
+echo "Test the LAMP stack by visiting http://192.168.56.23/info.php in your web browser"
+
 
